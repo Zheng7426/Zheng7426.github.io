@@ -17,7 +17,7 @@ gem "github-pages","~> 211", group: :jekyll_plugins
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
 end
-
+gem "just-the-docs"
 gem "webrick"
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
