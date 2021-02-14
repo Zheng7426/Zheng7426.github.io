@@ -23,13 +23,18 @@ title: 遥山落木
 description: >- # this means to ignore newlines until "baseurl:"
   建立这个博客的初衷是分享关于艺术及编程技术的一些见解和知识，如前端开发、机器学习、木吉他的弹奏、诗词古籍等。限于学识水平，内容谬误之处在所难免，殷切期待读者的指正。
   本博客用 Jekyll 搭建， 并部署于 Github Page。 
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/blog" # the subpath of your site, e.g. /blog
+url: "https://Zheng7426.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
-#github_username:  
+github_username: Zheng7426
 
+author: Hz
+instagram_username: zheng7426
+
+title-logo: /images/title-logo.png
 # Build settings
-theme: minima
+# Removed minima theme
+# theme: minima
 # theme: just-the-docs
 #remote_theme: pmarsceill/just-the-docs
 plugins:
