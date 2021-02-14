@@ -33,7 +33,7 @@ instagram_username: zheng7426
 title-logo: /images/title-logo.png
 # Build settings
 # Removed minima theme
-# theme: minima
+theme: minima
 # theme: just-the-docs
 #remote_theme: pmarsceill/just-the-docs
 plugins:
