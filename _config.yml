@@ -38,6 +38,7 @@ theme: minima
 #remote_theme: pmarsceill/just-the-docs
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
 
 # Exclude from processing.
 # The following items will not be processed, by default.
