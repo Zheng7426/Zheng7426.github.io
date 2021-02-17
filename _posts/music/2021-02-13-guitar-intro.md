@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "认识你的吉他"
+title: "啥是木吉他"
 date: 2020-02-13 00:00:00 -0000
 categories: music 
 ---
