@@ -5,13 +5,14 @@ date: 2020-03-21 00:00:00 -0000
 categories: coding 
 ---
 
-The coding challenges below were provided on [HackerRank](https://www.hackerrank.com/interview/interview-preparation-kit/strings/challenges).  
+The coding challenges below were provided by [HackerRank](https://www.hackerrank.com/interview/interview-preparation-kit/strings/challenges).  
 <br>
 <hr>
 <br>
-Challenge: Making Anagrams 
 
-Problem Statement: Given two strings, _a_ and _b_, that may or may not be of the same length, determine the minimum number of character deletions required to make _a_ and  _b_ anagrams. Any characters can be deleted from either of the strings.
+### Challenge: Making Anagrams 
+
+Given two strings, _a_ and _b_, that may or may not be of the same length, determine the minimum number of character deletions required to make _a_ and  _b_ anagrams. Any characters can be deleted from either of the strings.
 
 {% highlight python %}
 
