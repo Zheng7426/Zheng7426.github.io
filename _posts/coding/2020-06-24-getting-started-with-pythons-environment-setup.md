@@ -230,6 +230,181 @@ Let us get the dot product result.
 
 Apart from <code>.dot()</code> method, there are various methods you could use. You can check its official documentation [here](https://numpy.org/doc/stable/user/quickstart.html).
 
+You can find mean value in a matrix by the <code>np.mean()</code> method.
+
+```
+np.mean(x, axis=1)
+np.mean(x, axis=0)
+```
+![Jupyter Notebook step 17](/images/python_env/jupyter_17.png)
+
+Notice that in the context of NumPy, axis 1 is the axis that runs horizontally across the columns, while axis 0 is the axis that runs vertically along the rows.
+
+![Jupyter Notebook step 18](/images/python_env/jupyter_18.png)
+
+Did I mention that Dot Product is a very common tensor operation? Now it is an appropriate time to briefly introduce the concept of tensors. After all, we created our Tensorflow environment with Conda, and it is fairly likely that Tensorflow would be related to tensors.  
+
+A tensor could be viewed as a container for numerical data(in most cases).  
+
+A 0-dimensional tensor only contains one number, such as 2020, and 0D tensor is also called a scalar. We can use the <code>ndim</code> method to check the number of dimensions of a NumPy tensor.
+
+![Jupyter Notebook step 19](/images/python_env/jupyter_19.png)
+
+A 1D tensor contains an array of numbers, it is also called a vector.
+
+![Jupyter Notebook step 20](/images/python_env/jupyter_20.png)
+
+We have already dealt with 2D tensors, also known as matrices. A matrix contains an array of vectors.
+
+![Jupyter Notebook step 21](/images/python_env/jupyter_21.png)
+
+<br>
+There are higher-dimensional tensors, but we are not going to dive that deep for now. Since we have had a glimpse of how to run Python on the local Jupyter Notebook environment, it is time to try coding on an online platform. Let us go to [Google’s Colab](https://colab.research.google.com/notebooks/intro.ipynb).
+
+Colab is an abbreviation for Collaboratory. Google’s Colab helps you write and run Python code in your browser with zero configuration. That means you would not need to manually install packages as we did previously using Conda package manager. We can directly import needed packages and implement them on the fly.
+
+When you click the above Google’s Colab link, you might be directed to a Colab’s homepage. The web page is built on an interactive environment called the Colab notebook. Colab notebooks are Jupyter Notebook hosted by Colab. Therefore, the way to write code on the Colab notebook is almost identical to how you wrote code on your local Jupyter Notebook. The Python codes would be executed on Google’s cloud servers. Thus, your local machine’s computation power becomes irrelevant. If you have a browser and internet connection, you are ready to go.
+
+Let us create a new Colab notebook from the homepage.
+
+![Google's Colab step 1](/images/python_env/colab_1.png)
+
+Since we have touched upon tensors. Let us import TensorFlow and create a tensor, without explicitly dealing with the NumPy package. Note that we did not install TensorFlow, it would be fetched online for us. This also applies to other packages such as Pandas, Sci-kit Learn, Keras, and so on.
+
+```
+import tensorflow as tf
+tf.constant(2020) 
+```
+
+Press the play button or <code>SHIFT</code>+<code>ENTER</code> to run the code cell.
+
+![Google's Colab step 2](/images/python_env/colab_2.png)
+
+As shown above, we use <code>tf.constant()</code> to create a tensor. We could also create a 2D tensor.
+
+![Google's Colab step 3](/images/python_env/colab_3.png)
+
+In order to create mutable tensors that have values we can modify, we could use <code>tf.Variable()</code>.
+
+```
+v = tf.Variable([[1., 2., 3.], [4., 5., 6.]])
+v = tf.square(v)
+v += 2020
+```
+
+You can apply different kinds of tensor operations.
+
+![Google's Colab step 4](/images/python_env/colab_4.png)
+
+Since Colab notebooks are stored on your Google Drive account, you can mount your Google Drive to gain access to your files from the Colab notebook environment.  
+
+```
+from google.colab import drive
+drive.mount('/content/drive')
+```
+
+![Google's Colab step 5](/images/python_env/colab_5.png)
+
+After you copy and paste the authorization code to access your Google Drive, press <code>Enter</code>.
+
+![Google's Colab step 6](/images/python_env/colab_6.png)
+
+Then you may use the Pandas package to read the CSV file stored on your Google Drive folders. Do not worry about how to use Pandas for now because we are still in the process of exploring different approaches to Python’s environment setup. One drawback of using Colab is that if your notebook has been idle for a certain period of time, the space on the cloud server would be released and you would have to run your cells again.
+
+<br>
+So far, we have explored how to run Python on Command Line Interface(Anaconda Prompt), Jupyter notebook through Anaconda Navigator, and also on Google’s Colab. Lastly, we are going to run Python on Pycharm. Pycharm is a Python IDE(Integrated Development Environment).
+
+Let us head to [Pycharm’s download page](https://www.jetbrains.com/pycharm/download/) and select Community Edition.
+
+![Pycharm step 1](/images/python_env/pycharm_1.png)
+
+![Pycharm step 2](/images/python_env/pycharm_2.png)
+
+![Pycharm step 3](/images/python_env/pycharm_3.png)
+
+![Pycharm step 4](/images/python_env/pycharm_4.png)
+
+![Pycharm step 5](/images/python_env/pycharm_5.png)
+
+![Pycharm step 6](/images/python_env/pycharm_6.png)
+
+After the installation process is completed, open the Pycharm desktop application. Click on Configure.
+
+![Pycharm step 7](/images/python_env/pycharm_7.png)
+
+In the configuration dropdown list, select Settings.
+
+![Pycharm step 8](/images/python_env/pycharm_8.png)
+
+Select Project Interpreter.
+
+![Pycharm step 9](/images/python_env/pycharm_9.png)
+
+In the Project Interpreter page, click the gear button and select Add.
+
+![Pycharm step 10](/images/python_env/pycharm_10.png)
+
+In the left-hand section, select Conda Environment. Then check the Existing environment radio button, as we have already created a Tensorflow environment called my_first_env. Click OK to exit this Interpreter Adding window.
+
+![Pycharm step 11](/images/python_env/pycharm_11.png)
+
+Select the interpreter we have just added. Click Apply, then click OK to finish this configuration process. Now select Create New Project.
+
+![Pycharm step 12](/images/python_env/pycharm_12.png)
+
+Now the Project Interpreter would be set to the one we just added. If you did not see this window, you might simply restart the computer and then launch PyCharm again. After that, you can specify the location of your new project, as shown below.
+
+![Pycharm step 13](/images/python_env/pycharm_13.png)
+
+![Pycharm step 14](/images/python_env/pycharm_14.png)
+
+Click Create and then the initialization for your new project would begin.
+
+To create a Python script, click the File tab on the top left corner and select ‘New…’
+
+![Pycharm step 15](/images/python_env/pycharm_15.png)
+
+Then select Python File.
+
+![Pycharm step 16](/images/python_env/pycharm_16.png)
+
+![Pycharm step 17](/images/python_env/pycharm_17.png)
+
+Since we are using the Tensorflow environment as Project Interpreter. We have already installed packages like pandas, therefore, we could import them here. And in order to run the program, click the Run tab on the top toolbar.
+
+![Pycharm step 18](/images/python_env/pycharm_18.png)
+
+Select which Python file we want to execute.
+
+![Pycharm step 19](/images/python_env/pycharm_19.png)
+
+The output has been shown on the bottom window.
+
+![Pycharm step 20](/images/python_env/pycharm_20.png)
+
+This concludes our journey of Python environment setup. You may choose the most comfortable approach to write and execute your Python code. In general, writing in Jupyter Notebook is more flexible, because you execute one cell after another and the result of each cell would be displayed. On the other hand, if you are going to build a fairly complex application that requires a debugger, an IDE serves the purpose better.
+
+References:
+
+* _[Anaconda User Guide](https://docs.anaconda.com/anaconda/user-guide/)_
+
+* _[NumPy Quick Start Tutorial](https://numpy.org/doc/stable/user/quickstart.html)_
+
+* _[Colaborotary Intro](https://colab.research.google.com/notebooks/intro.ipynb)_
+
+* _[PyCharm documentation](https://www.jetbrains.com/help/pycharm/quick-start-guide.html)_
+
+* _Deep Learning with Python - Francois Chollet_
+
+
+
+
+
+
+
+
+
+
 
 
 
