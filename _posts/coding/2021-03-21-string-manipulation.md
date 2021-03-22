@@ -5,7 +5,7 @@ date: 2021-03-21 00:00:00 -0000
 categories: coding 
 ---
 
-The coding challenges below were provided by [HackerRank](https://www.hackerrank.com/interview/interview-preparation-kit/strings/challenges).  
+The coding challenges below are provided by [HackerRank](https://www.hackerrank.com/interview/interview-preparation-kit/strings/challenges).  
 <br>
 <hr>
 <br>
