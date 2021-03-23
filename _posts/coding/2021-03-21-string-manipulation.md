@@ -86,3 +86,29 @@ def isValid(s):
     return "YES"
   
 ```
+
+<br>
+
+### Challenge: Alternating Characters
+
+You are given a string containing characters _A_ and _B_ only. Your task is to change it into a string such that there are no matching adjacent characters. To do this, you are allowed to delete zero or more characters in the string.
+
+Your task is to find the minimum number of required deletions.
+
+```javascript
+
+function alternatingCharacters(s) {
+    // Initiate the number of deletion needed.
+    let count = 0;
+    /* Look over the length of the string.
+       and compare whether the current character
+       matches the next one */
+    for (let i = 0; i < s.length - 1; i++) {
+        if (s.charAt(i) === s.charAt(i+1)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+```
