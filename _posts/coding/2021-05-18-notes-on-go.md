@@ -343,3 +343,49 @@ func Heys(names []string) (map[string]string, error) {
 ```
 
 输入 `go run .` 即可获得带有每个名字及其随机信息的映射。
+
+### 添加测试
+
+现在让我们用内置的 Go 特性来为之前的代码创建单元测试。在开发过程中测试代码可以在每当做改动时暴露 bugs。我们会为 Hey 函数添加测试。
+
+在 greetings 目录下，创建一个名为 greetings_test.go 的文件。以 `_test.go` 结尾的文件可以让 `go test` 命令知道这个文件包含了测试函数。
+
+* 在同一个包里编写测试函数(包声明都是 `package greetings`)
+
+* 针对 `greetings.Hey` 创建两个测试函数，测试函数的名称需要有这样的形式：TestName，Name 指明测试的对象。另，测试函数接受一个指向测试包的 testing.T 类型的指针，作为其参数。我们使用这个参数的方法来进行测试报告以及记录。
+
+* TestHeyName 调用 Hey 函数，传递一个 name 值(该函数应返回一个有效的响应信息)。如果调用的时候返回了一个故障，或者一个不是预期的响应信息(没有包含你传递进去的名字)，那么我们使用 t 参数的 Fatalf 方法来打印出信息，并且结束程序的执行。
+
+* TestHelloEmpty 以一个空字符串调用 Hey 函数。这个测试是为了确认我们有妥当的故障处理。
+
+```golang
+package greetings 
+
+import (
+	"testing"
+	"regexp"
+)
+
+// TestHeyName 以一个 name 调用 greetings.Hey 函数
+// 检查返回的值是否有效
+func TestHeyName(t *testing.T) {
+	name := "Homer"
+	want := regexp.MustCompile(`\b` + name + `\b`)
+	msg, err := Hey("Homer")
+	if !want.MatchString(msg) || err != nil {
+		t.Fatalf(`Hey("Homer") = %q, %v, want match for %#q, nil`, msg, err, want)
+	}
+}
+
+// TestHeyEmpty 以一个空字符串调用 greetings.Hey
+// 检查是否会出故障
+func TestingHeyEmpty(t *testing.T) {
+	msg, err := Hey("")
+	if msg != "" || err == nil {
+		t.Fatalf(`Hey("") = %q, %v, want "", error`, msg, err)
+	}
+}
+
+```
+
+我们使用 `go test` 命令执行存在于测试文件(名字以 _test.go 结尾的文件)中的测试函数(函数名以 Test 开头的函数)。
