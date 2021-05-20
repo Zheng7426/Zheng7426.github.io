@@ -256,6 +256,90 @@ func main() {
 }
 ```
 
+### 返回一个随机的招呼语
 
+我们将对之前的代码作出如下修改，使得 greetings 模块不再返回单句招呼语，而是返回几句预先定好的招呼信息之一。我们会使用一个 Go slice。一个 slice 的大小可以在添加或剔除元素时动态地改变，除此之外它就像数组一样。
 
+* 首先，额外导入 `math/rand` 和 `time` 包。创建一个用当前的时间 seed `rand` 包的 `init()` 函数。在程序启动时，Go 会在全局变量初始化之后自动执行 init 函数。
 
+* 添加一个返回随机选择的招呼语的 `randomFormat` 函数。注意，`randomFormat` 是小写字母开头，所以只有它自己包里的代码才可以访问它，而不像 `Hey(name string)` 这个函数一样可以被导出。在这个函数主体中，声明一个带有 3 个信息格式的格式 slice。当你声明一个 slice 的时候，忽略其方括号中的大小，像这样：[]string。这将会告诉 Go 在 slice 之下数组的大小可以被动态改变。
+
+* 使用 `math/rand` 包来生成一个随机的数，用于从 slice 中选择一项元素。
+
+* 在 `Hey` 函数中，调用 `randomFormat` 函数获取一个返回的格式信息，然后用该格式和 `name` 值一起创建该信息。
+
+```golang
+package greetings 
+
+import (
+	"fmt"
+	"errors"
+	"math/rand"
+	"time"
+)
+
+func Hey(name string) (string, error) {
+	if name == "" {
+		return "", errors.New("empty name")
+	}
+
+	message := fmt.Sprintf(randomFormat(), name)
+	return message, nil 
+}
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+func randomFormat() string {
+	formats := []string{
+		"嘿, %v. 欢迎!",
+		"见到你真棒, %v!",
+		"哟, %v! 很稳!",
+	}
+
+	return formats[rand.Intn(len(formats))]
+}
+```
+
+### 给多个人返回招呼语
+
+我们会在一个请求中添加对多人打招呼的功能。换句话来说，我们会处理一个多值的输入，然后用多值输出来与输入的值匹配。为了做到这点，我们需要给一个返回招呼语的函数传递一个集合的名字，这样该函数就可以给每一个人发送招呼语。
+
+* 首先在 greetings.go 中编写一个名为 Heys 的函数，它的参数是带有多个名字的 slice。另，将其返回的类型标注为一个映射(map)，这样你便可以返回映射成招呼语的名字。
+
+* 在函数主体中，创建一个名为 `messages` 的映射，它会将每一个接收到的名字(作为键)与一个生成的信息(作为 值)联系起来。在 Go 这门语言中，初始化一个映射的句法是这样：`make(map[key-type]value-type)`。我们会让 Heys 函数把这个映射返回给调用函数(Hey.go 中的 main)。
+
+* 循环你的函数所接收到的名字，检查每一个名字是否不为空，然后将信息和它们联系起来。在这个 for 循环中，`range` 返回两个值：循环当前元素的索引(index)和该元素的复制值。我们并不需要索引，所以使用下划线(underscore)作为空格识别器来将其略过。
+
+```golang
+func Heys(names []string) (map[string]string, error) {
+	// 将名字与信息联系起来的映射
+	messages := make(map[string]string)
+
+	// 循环名字的 slice，对每一个名字调用 Hey 函数
+	for _, name := range names {
+		message, err := Hey(name)
+		if err != nil {
+			return nil, err
+		}
+		messages[name] = message
+	}
+	return messages, nil
+}
+```
+
+在 hey.go 文件中，做出下列修改：
+
+```go
+	names := []string{
+		"荷马",
+		"曾子",
+		"庄生",
+		"苏格拉底",
+	}
+
+	message, err := greetings.Heys(names)
+```
+
+输入 `go run .` 即可获得带有每个名字及其随机信息的映射。
