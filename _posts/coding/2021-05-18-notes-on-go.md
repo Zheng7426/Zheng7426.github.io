@@ -77,6 +77,40 @@ func Now() Time
     Now returns the current local time. */
 ```
 
+"fmt" 可以理解为 formatter 的 `fmt.Println()` 会在打印完内容之后另起一行，而 `fmt.Print()` 就不会有这样默认的行为。若要连接(concatenate)字符串及变量，我们可以在这两个函数中使用逗号分隔。
+
+`fmt.Printf()` 让我们往字符串中的 placeholder 插入值：
+
+```go
+yourAnswer := "B"
+fmt.Printf("Your answer is %v .", yourAnswer)
+// 输出: Your answer is B
+```
+
+`fmt.Sprintf()` 与 `fmt.Printf()` 很相似，主要的区别在于 `fmt.Sprintf()` 返回其值，而不是将其打印出来。
+
+在 Go 语言中，以 % 开头的 %v 被称为动词(verb)。下表列出了一些常见的动词：
+
+动词名称 | 释义
+------ | ------
+%v | 默认格式下的值，会被紧随其后的变量名依次替换
+%#v | 在 Go 语句下值的表征方式
+%T | 在 Go 语句下值的类型的表征方式
+%d | 十进制的数字
+%f | 小数点精确位数，如 %.2f (7.77)
+%% | 一个字面的百分号(%)
+
+若想要获取用户的输入，可以查看以下示例：
+
+```go
+
+fmt.Println("今天天气怎么样?")
+var weather string
+fmt.Scan(&weather)
+fmt.Printf("原来今天天气是 %v。", weather)
+
+```
+
 ### 在本地运行 Go
 
 在 Go 的[官网](https://golang.org/) 可以下载适合不同操作系统的安装包。安装包会将 Go 的分发内容装到 /user/local/go 这个路径。/user/local/go/bin 这个目录也应该被添加到你的 PATH 环境变量(这样你就可以在全局使用 Go)。
@@ -457,3 +491,78 @@ section3 = "修道之谓教"
 quote, ancientClassics := "不备不虞，不可以师", true
 ```
 
+### 控制流
+
+If, else if, else 语句的写法：
+
+```go
+if 条件1 {
+    操作1
+} else if 条件2 {
+    操作2
+} else {
+    操作3
+}
+```
+
+逻辑运算符：
+
+运算符 | 含义
+------ | ------
+&& | 与(AND)
+\|\| | 或(OR)
+! | 非(NOT)
+
+Switch 语句的写法：
+
+```go
+todaysWeather := "rainy"
+
+switch weatherRecord {
+    case "sunny":
+        fmt.Println("闲云潭影日悠悠，物换星移几度秋")
+    case "cloudy":
+        fmt.Println("溪云初起日沉阁，山雨欲来风满楼")
+    case "windy":
+        fmt.Println("林花谢了春红，太匆匆。无奈朝来寒雨，晚来风")
+    case "rainy":
+        fmt.Println("雨打梨花深闭门，忘了青春，误了青春")
+    case "":
+        fmt.Println("渺万里层云，千山暮雪，只影向谁去？")
+    default:
+        fmt.Println("试问卷帘人，却道海棠依旧")
+}
+```
+
+### 随机变化
+
+在 Go 的标准库中，这个名为 `math/rand` 的库可以帮助我们生成随机的整数。
+
+`rand.Intn()` 这个方法中，括号中应填的是最大值，如 `fmt.Println(rand.Intn(100))` 返回的是介于 0 和 100 之间的数(包含100)。
+
+在生成随机数的情况下，Go 会播种(seed)一个数字作为生成随机数的起点。默认情况下，这个播种值为 1。理论上来说，我们可以使用 `rand.Seed()` 方法提供一个新的播种值，然而若我们提供的仍是一个常数，那么程序在运行时所产生的随机值都是一样的。这就好比在用 Python 写机器学习的时候代码时，我们想要将数据按比例随机地分散成训练集和测试集，为了维持每次随机分组的结果不变，我们则定义 Sci-kit Learn 的 train_test_split 方法中的 random_state 参数，如下所示：
+
+```python
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X_normalized, y, test_size=0.2, random_state=2020)
+```
+
+然而，有的时候我们想在每一次程序运行时都生成不同的数，那么我们就需要一个变化的值作为播种值。一个普遍的做法是使用时间，因为在我们每次运行程序时，当下的时间都是不同的。
+
+```go
+package main 
+
+import (
+  "fmt"
+  "math/rand"
+  "time"
+)
+ 
+func main() {
+  rand.Seed(time.Now().UnixNano())
+  fmt.Println(rand.Intn(100))
+}
+```
+
+在上述示例中，我们导入了 time 库，其中被串联的 Now() 和 UnixNano() 方法返回当下时间与 1970 年的时间差，然后这个数会被传递至 rand.Seed() 方法，从而让我们在每一次运行 rand.Intn(100) 的时候都得到一个 0 至 100 之间不同的数。
