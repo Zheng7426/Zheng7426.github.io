@@ -38,7 +38,9 @@ import (
 import p1 "第一个包"
 ```
 
-_函数_ 是可重复使用的代码区块，在 Go 里是这样定义函数的：
+编程中的 _函数_ 与其在数学中的定义不同，它指的是可重复使用的代码区块。它亦可以返回数据给程序的其他元素，如果有要返回的值的话，在定义函数的时候要在函数名、参数名之后标注返回值的类型。在 Go 这门语言中，每一个函数都会生成自己的 _作用域(scope)_。作用域指的是值或者函数被定义、可被访问的空间。作用域分为全局作用域和本地作用域。
+
+在 Go 里是这样定义函数的：
 
 * 函数声明的开头是 `func` 关键词
 
@@ -57,6 +59,8 @@ func main() {
 ```
 
 通常来说，函数必须被调用才能运行其代码。然而在 Go 语言中，名为 `main` 的函数是特殊的 —— 当一个 Go 文件有 `package main` 作为其包声明的时候，main 函数会自动运行。
+
+采用 `defer` 关键词可以使一个函数在载体函数运行到末尾时才调用。
 
 如果不了解上述示例中 fmt 包是做什么的，可以使用 Go 内置的文档系统，在命令行输入 `go doc 包名` 便可以查询特定的文档:
 
@@ -77,7 +81,7 @@ func Now() Time
     Now returns the current local time. */
 ```
 
-"fmt" 可以理解为 formatter 的 `fmt.Println()` 会在打印完内容之后另起一行，而 `fmt.Print()` 就不会有这样默认的行为。若要连接(concatenate)字符串及变量，我们可以在这两个函数中使用逗号分隔。
+"fmt" 可以理解为 formatter 的简写。`fmt.Println()` 会在打印完内容之后另起一行，而 `fmt.Print()` 就不会有这样默认的行为。若要连接(concatenate)字符串及变量，我们可以在这两个函数中使用逗号分隔。
 
 `fmt.Printf()` 让我们往字符串中的 placeholder 插入值：
 
@@ -566,3 +570,83 @@ func main() {
 ```
 
 在上述示例中，我们导入了 time 库，其中被串联的 Now() 和 UnixNano() 方法返回当下时间与 1970 年的时间差，然后这个数会被传递至 rand.Seed() 方法，从而让我们在每一次运行 rand.Intn(100) 的时候都得到一个 0 至 100 之间不同的数。
+
+### 指针与地址
+
+Go 是一门以值传递的语言，换言之，在给函数传递参数时，我们是将其值传入。当我们以一个参数调用函数时，Go 的编译器严格使用该参数的值，而不是该参数本身。由于这个特性，在函数中发生的改变不会影响原来的参数。
+
+然而，通过地址(addresss)、指针(pointers)、dereferencing(消引)的方式，我们仍可以对不同的作用域的值进行修改。
+
+```go
+package main
+
+import (
+    "fmt"
+    "time"
+    "math/rand"
+)
+
+func timesTen(num int) {
+    num *= 10
+}
+
+func main() {
+    rand.Seed(time.Now().unixNano())
+    aNum := rand.Intn(10)
+    fmt.Println("Initial value:", aNum)
+    timesTen(aNum)
+    fmt.Print("Final value:", aNum)
+}
+```
+
+计算机内存分配给值的存储空间被称为地址。每一个地址由一个独一无二的数值标记(通常为十六进制形式)。每次我们使用变量时，都会获取储存在该变量的地址的值。我们可以用 `&` 运算符访问一个变量的地址。
+
+```golang
+
+aVariable := "To find address"
+fmt.Println(&aVariable)
+
+```
+
+指针是专门用于储存地址的变量。以 `*` 标记：
+
+```golang
+
+var pointerForString *string
+
+weather := "breezy"
+
+pointerForString = &weather
+
+fmt.Println(pointerForString)
+
+```
+
+当我们想改变一个地址对应的变量的值的时候，我们可以使用指针来访问那个地址，并更改其值，这被称为消引(dereferencing)。
+
+```golang
+weather := "drizzling"
+
+pointerForString := &weather
+
+*pointerForString = "thunderstorm"
+
+fmt.Println(weather)
+
+```
+
+回到之前将参数乘以 10 的示例，这回我们不再向 timesTen 函数递入变量的值，而是递入变量的地址，使得其值在不同的作用域中也可以发生变化，并且该变化直接作用于地址上，所以会被保留。
+
+```go
+func timesTen(num *int) {
+    *num *= 10
+}
+
+func main() {
+    rand.Seed(time.Now().unixNano())
+    aNum := rand.Intn(10)
+    fmt.Println("Initial value:", aNum)
+    timesTen(&aNum)
+    fmt.Print("Final value:", aNum)
+}
+```
